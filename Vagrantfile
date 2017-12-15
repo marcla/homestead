@@ -11,6 +11,7 @@ homesteadYamlPath = confDir + "/Homestead.yaml"
 homesteadJsonPath = confDir + "/Homestead.json"
 afterScriptPath = confDir + "/after.sh"
 aliasesPath = confDir + "/aliases"
+extrasPath = confDir + "/extras"
 
 require File.expand_path(File.dirname(__FILE__) + '/scripts/homestead.rb')
 
@@ -23,6 +24,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             s.inline = "awk '{ sub(\"\r$\", \"\"); print }' /tmp/bash_aliases > /home/vagrant/.bash_aliases"
         end
     end
+
+    if File.directory? extrasPath then
+        config.vm.provision "file", source: extrasPath, destination: "/tmp/extrasPath"
+        config.vm.provision "shell" do |s|
+          s.inline = "awk '{ sub(\"\r$\", \"\"); print }' /tmp/extrasPath/extra > /home/vagrant/.extra"
+        end
+    end
+    #     config.vm.provision "shell" do |s|
+    #         s.inline = "awk '{ sub(\"\r$\", \"\"); print }' /tmp/extrasPath/bash_prompt > /home/vagrant/.bash_prompt"
+    #     end
 
     if File.exist? homesteadYamlPath then
         settings = YAML::load(File.read(homesteadYamlPath))

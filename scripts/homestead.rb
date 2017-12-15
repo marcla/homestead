@@ -178,6 +178,11 @@ class Homestead
             end
         end
 
+        config.vm.provision "shell" do |s|
+            s.name = "Clear Extras"
+            s.path = scriptDir + "/clear-extras.sh"
+        end
+
         # Install All The Configured Nginx Sites
         config.vm.provision "shell" do |s|
             s.path = scriptDir + "/clear-nginx.sh"
@@ -350,6 +355,11 @@ class Homestead
             s.name = "Update Composer"
             s.inline = "sudo /usr/local/bin/composer self-update && sudo chown -R vagrant:vagrant /home/vagrant/.composer/"
             s.privileged = false
+        end
+
+        # Install bash_autocomplete
+        config.vm.provision "shell" do |s|
+            s.path = scriptDir + "/install-utility.sh"
         end
 
         # Configure Blackfire.io

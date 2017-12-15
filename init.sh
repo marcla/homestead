@@ -8,5 +8,6 @@ fi
 
 cp -i resources/after.sh after.sh
 cp -i resources/aliases aliases
+cp -r resources/extras/ .
 
 echo "Homestead initialized!"
